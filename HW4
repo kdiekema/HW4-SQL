@@ -1,5 +1,5 @@
 --1
-
+/* Write a join query that returns the role, total number of films, and average order in the credits when Nicolas Cage has played each of these roles. Sort the results in descending order by total number of films. */
 SELECT Principals.Role, COUNT(Distinct(Principals.MovieID)) AS TotalNumberOfFilms, ROUND(AVG(Principals.CreditOrder),0) AS AverageOrderInCredits
 FROM PRINCIPALS JOIN PEOPLE
 ON PRINCIPALS.PersonID = PEOPLE.PersonID
@@ -8,7 +8,7 @@ GROUP BY Principals.Role
 ORDER BY COUNT(Principals.Role) DESC;
 
 --2
-
+/* Write a subquery that finds all of the movies released since 2010 (inclusive) that made a profit below the average of all of Cage’s movies. Return the movie title, release date, MPAA rating, and profit. Sort results from least profitable to most profitable. */
 SELECT Title, ReleaseDate, MPAA, TO_CHAR((BoxOffice-ProductionCost), '$999,999,999,9999.99') AS Profit
 FROM MOVIES JOIN PRINCIPALS ON MOVIES.MovieID = PRINCIPALS.MovieID
 WHERE PRINCIPALS.PersonID = 'nm0000115'
@@ -19,7 +19,7 @@ FROM MOVIES)
 ORDER BY PROFIT DESC;
 
 --3
-
+/* Write a compound query that returns the number of films, lowest IMDB score, average IMDB score, and highest IMDB score for both the drama and action genres. */
 SELECT Genre, COUNT(Genre) AS GenreTotal, MIN(Rating) AS WorstRating, Max(Rating) AS BestRating, ROUND(AVG(Rating),1) AS AverageRating
 FROM GENRES JOIN PRINCIPALS on GENRES.MovieID = PRINCIPALS.MovieID
 JOIN MOVIES ON MOVIES.MovieID = PRINCIPALS.MovieID
@@ -35,7 +35,7 @@ AND PERSONID = 'nm0000115'
 GROUP BY GENRE;
 
 --4
-
+/* Write a subquery that returns the character name, total number of appearances, year of first appearance, and year of last appearance for each character that he has played more than once. */
 SELECT PRINCIPALS.CharacterName, COUNT(PRINCIPALS.MovieID) AS NumberofApperances, MIN(EXTRACT(YEAR FROM ReleaseDate)) AS FirstAppearance, MAX(EXTRACT(YEAR FROM ReleaseDate)) AS LastApperance
 FROM PRINCIPALS JOIN MOVIES
 ON PRINCIPALS.MovieID = MOVIES.MovieID
@@ -50,7 +50,7 @@ GROUP BY PRINCIPALS.CharacterName;
 
 
 --Extra Credit
-
+/* Write a compound query that returns the total number of movies, average IMDB score (rounded to 1 decimal place), total number of votes (displayed in proper number format with commas), and average profit (displayed in currency format) for each season. */
 SELECT CASE
 WHEN EXTRACT(MONTH FROM (ReleaseDate)) IN (12, 01, 02) THEN 'Winter'
 WHEN EXTRACT(MONTH FROM (ReleaseDate)) IN (03, 04, 05) THEN 'Spring'
